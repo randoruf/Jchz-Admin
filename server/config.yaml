@@ -1,0 +1,19 @@
+System-Config:
+  port: 9755 # 服务端口
+  db-type: mysql # 数据库类型，暂仅支持 mysql
+
+Token-Config:
+  access-expire: 24 # token 租期（以小时为单位）
+  access-secret: tataKai # token 密钥
+  buffer-time: 600 # token 缓冲时间（单位：秒），token 签发超过该时间且未过期时换新 token 以续期
+
+# 数据库相关设置
+Db-Config:
+  path: 127.0.0.1
+  port: 3306
+  Config: charset=utf8mb4&parseTime=True&loc=Local
+  db-name: food
+  username:
+  password:
+  max-idle-conns: 10
+  max-open-conns: 10
