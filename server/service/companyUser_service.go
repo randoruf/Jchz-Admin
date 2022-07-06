@@ -1,6 +1,7 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"jchz-admin/global"
 	"jchz-admin/model/request"
 	"jchz-admin/model/system"
@@ -14,14 +15,22 @@ func (u *CompanyUserService) QueryUsersList(QueryParam request.UserQueryRequest)
 	query := QueryParam.Query
 	var ComUserList []*system.CompanyUser
 	var total int64
-	err := global.JA_DB.Table((&system.CompanyUser{}).TableName()).Where("com_username LIKE ?", "%"+query+"%").Count(&total).Error
+
+	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
+		err := global.JA_DB.Table((&system.CompanyUser{}).TableName()).Where("com_username LIKE ?", "%"+query+"%").Count(&total).Error
+		if err != nil {
+			return err
+		}
+		err = global.JA_DB.Where("com_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&ComUserList).Error
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 	if err != nil {
 		return nil, 0, err
 	}
-	err = global.JA_DB.Where("com_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&ComUserList).Error
-	if err != nil {
-		return nil, 0, err
-	}
+
 	return ComUserList, total, nil
 }
 

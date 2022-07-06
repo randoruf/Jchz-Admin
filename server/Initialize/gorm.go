@@ -17,7 +17,9 @@ func InitGorm() *gorm.DB {
 		mysqlConfig := mysql.Config{
 			DSN: m.Dsn(),
 		}
-		db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{})
+		db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
+			SkipDefaultTransaction: true, // 禁用默认事务
+		})
 		if err != nil {
 			return nil
 		} else {

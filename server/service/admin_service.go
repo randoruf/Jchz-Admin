@@ -27,47 +27,29 @@ func (AdminService *AdminService) Login(u *system.Admin) (adminInter *system.Adm
 	return &admin, err
 }
 
-// Register 后台页面注册逻辑处理
-func (AdminService *AdminService) Register(u *system.Admin) (adminInter system.Admin, err error) {
-	var admin system.Admin
-	if !errors.Is(global.JA_DB.Where("admin_username = ?", u.Username).First(&admin).Error, gorm.ErrRecordNotFound) { // 判断用户名是否注册
-		return adminInter, errors.New("用户名已注册")
-	}
-	// 否则 密码 hash 加密 注册
-	u.Password = utils.BcryptHash(u.Password)
-	err = global.JA_DB.Create(&u).Error
-	return admin, err
-}
-
-// ChangePassword 修改密码
-func (AdminService *AdminService) ChangePassword(u *system.Admin, newPassword string) (adminInter *system.Admin, err error) {
-	var admin system.Admin
-	err = global.JA_DB.Where("admin_username = ?", u.Username).First(&admin).Error
-	if err != nil {
-		return nil, err
-	}
-	if ok := utils.BcryptCheck(u.Password, admin.Password); !ok {
-		return nil, errors.New("原密码错误")
-	}
-	admin.Password = utils.BcryptHash(newPassword)
-	err = global.JA_DB.Save(&admin).Error
-	return &admin, err
-}
-
 func (AdminService *AdminService) QueryUsersList(QueryParam request.UserQueryRequest) ([]*system.Admin, int64, error) {
 	pageNum := QueryParam.Pagenum - 1
 	pageSize := QueryParam.Pagesize
 	query := QueryParam.Query
 	var AdminList []*system.Admin
 	var total int64
-	err := global.JA_DB.Table((&system.Admin{}).TableName()).Where("admin_username LIKE ?", "%"+query+"%").Count(&total).Error
+
+	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
+		err := global.JA_DB.Table((&system.Admin{}).TableName()).Where("admin_username LIKE ?", "%"+query+"%").Count(&total).Error
+		if err != nil {
+			return err
+		}
+		err = global.JA_DB.Where("admin_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&AdminList).Error
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
 	if err != nil {
 		return nil, 0, err
 	}
-	err = global.JA_DB.Where("admin_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&AdminList).Error
-	if err != nil {
-		return nil, 0, err
-	}
+
 	return AdminList, total, nil
 }
 
