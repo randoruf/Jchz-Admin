@@ -19,7 +19,7 @@ export default {
     btnTitle: 'login'
   },
   dialog: {
-    deleteTitle: 'Are you sure you want to delete the user ',
+    deleteTitle: 'Are you sure you want to delete it ',
     deleteError: 'Delete failed'
   },
   table: {

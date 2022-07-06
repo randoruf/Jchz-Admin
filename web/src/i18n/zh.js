@@ -19,7 +19,7 @@ export default {
     btnTitle: '登录'
   },
   dialog: {
-    deleteTitle: '确定要删除用户',
+    deleteTitle: '确定要删除吗',
     deleteError: '删除失败'
   },
   table: {
