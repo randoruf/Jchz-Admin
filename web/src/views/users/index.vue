@@ -83,7 +83,7 @@ const roleRadio = ref('user')
 const queryForm = ref({
   query: '',
   pagenum: 1,
-  pagesize: 2,
+  pagesize: 5,
   role: 'user'
 })
 

@@ -81,7 +81,7 @@ const i18n = useI18n()
 const queryForm = ref({
   query: '',
   pagenum: 1,
-  pagesize: 2
+  pagesize: 5
 })
 
 const total = ref(0)
