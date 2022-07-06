@@ -9,4 +9,5 @@ var (
 	companyService = service.ServiceGroupApp.CompanyUserService
 	articleService = service.ServiceGroupApp.ArticleService
 	tagService     = service.ServiceGroupApp.TagService
+	shopService    = service.ServiceGroupApp.ShopService
 )

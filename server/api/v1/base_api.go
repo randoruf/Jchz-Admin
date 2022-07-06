@@ -34,7 +34,7 @@ func (a *BaseApi) Login(c *gin.Context) {
 		panic(err)
 	}
 	res := LogRes.LoginResponse{
-		Data: &LogRes.LoginData{ID: admin.ID, Username: form.Username, Token: tok},
+		Data: &LogRes.LoginData{ID: admin.ID, Username: admin.Username, Avatar: admin.Avatar, Token: tok},
 		Meta: &LogRes.Meta{Msg: "login ok", Status: http.StatusOK},
 	}
 	c.JSON(http.StatusOK, res)

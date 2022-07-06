@@ -9,9 +9,9 @@ type Tags struct {
 }
 
 type TagPageData struct {
-	Total   int64  `json:"total"`
-	PageNum int64  `json:"pagenum"`
-	Tags    []Tags `json:"tags"`
+	Total   int64   `json:"total"`
+	PageNum int64   `json:"pagenum"`
+	Tags    []*Tags `json:"tags"`
 }
 
 type TagPageResponse struct {

@@ -20,6 +20,7 @@ func InitRouters() *gin.Engine {
 		router.RouterGroupApp.UsersRouter.InitUsersRouter(PrivateGroup)
 		router.RouterGroupApp.ArticleRouter.InitArticleRouter(PrivateGroup)
 		router.RouterGroupApp.TagsRouter.InitTagsRouter(PrivateGroup)
+		router.RouterGroupApp.ShopRouter.InitUsersRouter(PrivateGroup)
 	}
 	return r
 }

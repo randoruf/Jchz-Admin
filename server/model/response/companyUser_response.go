@@ -1,6 +1,8 @@
 package response
 
-import "jchz-admin/model/system"
+import (
+	"jchz-admin/model/system"
+)
 
 type CompanyUserData struct {
 	Total   int64                 `json:"total"`
@@ -21,4 +23,13 @@ type AddCompanyUserResponse struct {
 type UpdateCompanyUserResponse struct {
 	UserData *system.CompanyUser `json:"data"`
 	Meta     *Meta               `json:"meta"`
+}
+
+type CheckComIdData struct {
+	Result string `json:"result"`
+}
+
+type CheckComIDResponse struct {
+	Data *CheckComIdData `json:"data"`
+	Meta *Meta           `json:"meta"`
 }

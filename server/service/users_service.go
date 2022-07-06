@@ -1,7 +1,6 @@
 package service
 
 import (
-	"gorm.io/gorm"
 	"jchz-admin/global"
 	"jchz-admin/model/request"
 	"jchz-admin/model/system"
@@ -15,20 +14,11 @@ func (u *UserService) QueryUsersList(QueryParam request.UserQueryRequest) ([]*sy
 	query := QueryParam.Query
 	var UserList []*system.User
 	var total int64
-
-	// 使用事务提交多组 sql 语句，主要为了保证性能：只有一次 RTT
-	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
-		err := global.JA_DB.Table((&system.User{}).TableName()).Where("user_username LIKE ?", "%"+query+"%").Count(&total).Error
-		if err != nil {
-			return err
-		}
-		err = global.JA_DB.Where("user_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&UserList).Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-
+	err := global.JA_DB.Table((&system.User{}).TableName()).Where("user_username LIKE ?", "%"+query+"%").Count(&total).Error
+	if err != nil {
+		return nil, 0, err
+	}
+	err = global.JA_DB.Where("user_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&UserList).Error
 	if err != nil {
 		return nil, 0, err
 	}

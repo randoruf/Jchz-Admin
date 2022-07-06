@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"jchz-admin/global"
 	"jchz-admin/model/request"
 	"jchz-admin/model/system"
@@ -33,23 +32,14 @@ func (AdminService *AdminService) QueryUsersList(QueryParam request.UserQueryReq
 	query := QueryParam.Query
 	var AdminList []*system.Admin
 	var total int64
-
-	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
-		err := global.JA_DB.Table((&system.Admin{}).TableName()).Where("admin_username LIKE ?", "%"+query+"%").Count(&total).Error
-		if err != nil {
-			return err
-		}
-		err = global.JA_DB.Where("admin_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&AdminList).Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-
+	err := global.JA_DB.Table((&system.Admin{}).TableName()).Where("admin_username LIKE ?", "%"+query+"%").Count(&total).Error
 	if err != nil {
 		return nil, 0, err
 	}
-
+	err = global.JA_DB.Where("admin_username LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&AdminList).Error
+	if err != nil {
+		return nil, 0, err
+	}
 	return AdminList, total, nil
 }
 
@@ -84,9 +74,12 @@ func (AdminService *AdminService) UpdateAdmin(uid string, form request.UpdateUse
 }
 
 func (AdminService *AdminService) DeleteAdmin(uid string) (bool, error) {
-	err := global.JA_DB.Delete(&system.Admin{}, uid).Error
-	if err != nil {
-		return false, err
+	res := global.JA_DB.Delete(&system.Admin{}, uid)
+	if res.Error != nil {
+		return false, res.Error
 	}
-	return true, nil
+	if res.RowsAffected > 0 {
+		return true, nil
+	}
+	return false, nil
 }

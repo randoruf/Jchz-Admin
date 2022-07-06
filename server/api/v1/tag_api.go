@@ -44,10 +44,10 @@ func (t *TagApi) GetTagsList(c *gin.Context) {
 		return
 	}
 
-	var ResTagsList []response.Tags
+	var ResTagsList []*response.Tags
 
 	for i, j := 0, 0; i < len(TagsList); i++ {
-		Tag := response.Tags{
+		Tag := &response.Tags{
 			ID:       TagsList[i].ID,
 			TagName:  TagsList[i].TagName,
 			Articles: 0,

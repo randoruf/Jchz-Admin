@@ -1,7 +1,6 @@
 package service
 
 import (
-	"gorm.io/gorm"
 	"jchz-admin/global"
 	"jchz-admin/model/request"
 	"jchz-admin/model/system"
@@ -16,24 +15,18 @@ func (u *ArticleService) QueryArticlesList(QueryParam request.ArticleQueryReques
 	var ArticleList []*system.Article
 	var TagNames []*system.ArticleTags
 	var total int64
-	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
-		err := global.JA_DB.Table("tiezi").Where("tiezi_title LIKE ?", "%"+query+"%").Count(&total).Error
-		if err != nil {
-			return err
-		}
-		err = global.JA_DB.Where("tiezi_title LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&ArticleList).Error
-		if err != nil {
-			return err
-		}
-		if len(ArticleList) == 0 {
-			return nil
-		}
-		err = global.JA_DB.Table((&system.Article{}).ArticleTagsViewName()).Where("tiezi_id >= ?", ArticleList[0].ArticleId).Find(&TagNames).Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
+	err := global.JA_DB.Table("tiezi").Where("tiezi_title LIKE ?", "%"+query+"%").Count(&total).Error
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	err = global.JA_DB.Where("tiezi_title LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&ArticleList).Error
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	if len(ArticleList) == 0 {
+		return nil, nil, 0, nil
+	}
+	err = global.JA_DB.Table((&system.Article{}).ArticleTagsViewName()).Where("tiezi_id >= ?", ArticleList[0].ArticleId).Find(&TagNames).Error
 	if err != nil {
 		return nil, nil, 0, err
 	}

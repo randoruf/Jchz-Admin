@@ -1,7 +1,6 @@
 package service
 
 import (
-	"gorm.io/gorm"
 	"jchz-admin/global"
 	"jchz-admin/model/request"
 	"jchz-admin/model/system"
@@ -15,24 +14,17 @@ func (t *TagService) QueryTagsList(QueryParam request.TagQueryRequest) ([]*syste
 	pageSize := QueryParam.Pagesize
 	query := QueryParam.Query
 	var TagList []*system.Tag
-	var total int64
 	var CountList []*system.TagCountList
-
-	err := global.JA_DB.Transaction(func(tx *gorm.DB) error {
-		err := global.JA_DB.Table((&system.Tag{}).TableName()).Where("tag_name LIKE ?", "%"+query+"%").Count(&total).Error
-		if err != nil {
-			return err
-		}
-		err = global.JA_DB.Where("tag_name LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&TagList).Error
-		if err != nil {
-			return err
-		}
-		err = global.JA_DB.Table((&system.Tag{}).TagArticlesViewName()).Find(&CountList).Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
+	var total int64
+	err := global.JA_DB.Table((&system.Tag{}).TableName()).Where("tag_name LIKE ?", "%"+query+"%").Count(&total).Error
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	err = global.JA_DB.Where("tag_name LIKE ?", "%"+query+"%").Limit(pageSize).Offset(pageNum * pageSize).Find(&TagList).Error
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	err = global.JA_DB.Table((&system.Tag{}).TagArticlesViewName()).Find(&CountList).Error
 	if err != nil {
 		return nil, nil, 0, err
 	}

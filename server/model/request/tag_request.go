@@ -1,7 +1,5 @@
 package request
 
-// user, companyUser, admin 通用请求结构
-
 type TagQueryRequest struct {
 	Query    string `json:"query"`
 	Pagenum  int    `json:"pagenum"`

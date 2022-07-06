@@ -229,15 +229,47 @@ func (u *UserApi) DeleteCompanyUser(c *gin.Context) {
 	}
 	flag, err := companyService.DeleteCompanyUser(uid)
 	if err != nil {
-		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
-		return
-	}
-	if flag == false {
 		system.PrintError(err)
 		response.FailWithDetailed(http.StatusInternalServerError, "删除商家用户失败", c)
 		return
 	}
+	if flag == false {
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		return
+	}
 	response.SuccessWithNullData(http.StatusOK, "删除商家用户成功", c)
+	return
+}
+
+func (u *UserApi) CheckComID(c *gin.Context) {
+	uid := c.Param("id")
+	if uid == "" {
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		return
+	}
+	flag, err := companyService.CheckComID(uid)
+	if err != nil {
+		system.PrintError(err)
+		response.FailWithDetailed(http.StatusInternalServerError, "检查商家用户id失败，服务器出错，请稍后再试", c)
+		return
+	}
+	if flag == false {
+		c.JSON(http.StatusOK, response.CheckComIDResponse{
+			Data: &response.CheckComIdData{Result: "false"},
+			Meta: &response.Meta{
+				Msg:    "该商家用户id不存在",
+				Status: http.StatusOK,
+			},
+		})
+		return
+	}
+	c.JSON(http.StatusOK, response.CheckComIDResponse{
+		Data: &response.CheckComIdData{Result: "true"},
+		Meta: &response.Meta{
+			Msg:    "该商家用户id存在",
+			Status: http.StatusOK,
+		},
+	})
 	return
 }
 
@@ -298,11 +330,12 @@ func (u *UserApi) DeleteAdmin(c *gin.Context) {
 	}
 	flag, err := adminService.DeleteAdmin(uid)
 	if err != nil {
-		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		system.PrintError(err)
+		response.FailWithDetailed(http.StatusInternalServerError, "删除管理员失败", c)
 		return
 	}
 	if flag == false {
-		response.FailWithDetailed(http.StatusInternalServerError, "删除管理员失败", c)
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
 		return
 	}
 	response.SuccessWithNullData(http.StatusOK, "删除管理员成功", c)

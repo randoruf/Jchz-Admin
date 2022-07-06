@@ -18,6 +18,7 @@ func (u *UsersRouter) InitUsersRouter(Router *gin.RouterGroup) {
 		usersRouter.POST("/companyUsers", userApi.AddCompanyUser)
 		usersRouter.PUT("/companyUsers/:id", userApi.UpdateCompanyUser)
 		usersRouter.DELETE("/companyUsers/:id", userApi.DeleteCompanyUser)
+		usersRouter.GET("/checkComID/:id", userApi.CheckComID)
 		usersRouter.POST("/admin", userApi.AddAdmin)
 		usersRouter.PUT("/admin/:id", userApi.UpdateAdmin)
 		usersRouter.DELETE("/admin/:id", userApi.DeleteAdmin)
