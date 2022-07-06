@@ -42,7 +42,7 @@
     <el-pagination
       v-model:currentPage="queryForm.pagenum"
       v-model:page-size="queryForm.pagesize"
-      :page-sizes="[2, 5, 10, 15]"
+      :page-sizes="[5, 10, 15, 20]"
       :small="small"
       :disabled="disabled"
       :background="background"
