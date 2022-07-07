@@ -75,7 +75,7 @@ import { options } from './options'
 import Dialog from './components/dialog.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { TrimString } from '../../utils/filters'
+import { TrimString, TrimTag } from '../../utils/filters'
 const i18n = useI18n()
 
 const queryForm = ref({
@@ -111,6 +111,10 @@ const handleCurrentChange = (val) => {
 const handleDialogValue = (row) => {
   dialogTitle.value = '编辑文章'
   dialogTableValue.value = JSON.parse(JSON.stringify(row))
+  const Tags = row.tags
+  dialogTableValue.value.tag1 = TrimTag(Tags, 0)
+  dialogTableValue.value.tag2 = TrimTag(Tags, 1)
+  dialogTableValue.value.tag3 = TrimTag(Tags, 2)
   dialogVisible.value = true
 }
 

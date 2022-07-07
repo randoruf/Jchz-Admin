@@ -20,6 +20,15 @@
       <el-form-item label="封面图片" prop="cover">
         <el-input v-model="form.cover" />
       </el-form-item>
+      <el-form-item label="标签1" prop="tag1">
+        <el-input v-model="form.tag1" />
+      </el-form-item>
+      <el-form-item label="标签2" prop="tag2">
+        <el-input v-model="form.tag2" />
+      </el-form-item>
+      <el-form-item label="标签3" prop="tag3">
+        <el-input v-model="form.tag3" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -34,6 +43,7 @@
 import { defineEmits, ref, defineProps, watch } from 'vue'
 import { editArticle } from '@/api/article'
 import { ElMessage } from 'element-plus'
+import { tagNameExists } from '../../../api/tags'
 const props = defineProps({
   dialogTitle: {
     type: String,
@@ -49,20 +59,29 @@ const props = defineProps({
 const formRef = ref(null)
 
 const form = ref({
-  username: '',
-  password: '',
-  email: '',
-  phone: '',
-  sex: '',
-  hometown: '',
-  avatar: '',
-  birth: ''
+  title: '',
+  content: '',
+  cover: '',
+  tag1: '',
+  tag2: '',
+  tag3: ''
 })
+
+const validateTag = async (rule, value, callback) => {
+  const res = await tagNameExists(value)
+  if (res != null && res.result === 'true') {
+    return
+  }
+  callback(new Error('该标签不存在'))
+}
 
 const rules = ref({
   title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
   content: [{ required: true, message: '请输入内容', trigger: 'blur' }],
-  cover: [{ required: true, message: '请输入封面图片URL', trigger: 'blur' }]
+  cover: [{ required: true, message: '请输入封面图片URL', trigger: 'blur' }],
+  tag1: [{ validator: validateTag, trigger: 'blur' }],
+  tag2: [{ validator: validateTag, trigger: 'blur' }],
+  tag3: [{ validator: validateTag, trigger: 'blur' }]
 })
 
 watch(

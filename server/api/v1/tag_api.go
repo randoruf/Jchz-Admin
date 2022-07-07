@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"jchz-admin/core/system"
 	"jchz-admin/model/request"
 	"jchz-admin/model/response"
@@ -139,5 +140,37 @@ func (t *TagApi) DeleteTag(c *gin.Context) {
 		return
 	}
 	response.SuccessWithNullData(http.StatusOK, "删除标签成功", c)
+	return
+}
+
+func (t *TagApi) TagNameExists(c *gin.Context) {
+	name := c.Param("tagName")
+	if name == "" {
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		return
+	}
+	flag, err := tagService.TagNameExists(name)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		system.PrintError(err)
+		response.FailWithDetailed(http.StatusInternalServerError, "检查标签名失败，服务器出错，请稍后再试", c)
+		return
+	}
+	if flag == false {
+		c.JSON(http.StatusOK, response.CheckExistsResponse{
+			Data: &response.CheckExistsData{Result: "false"},
+			Meta: &response.Meta{
+				Msg:    "该标签不存在",
+				Status: http.StatusOK,
+			},
+		})
+		return
+	}
+	c.JSON(http.StatusOK, response.CheckExistsResponse{
+		Data: &response.CheckExistsData{Result: "true"},
+		Meta: &response.Meta{
+			Msg:    "该标签存在",
+			Status: http.StatusOK,
+		},
+	})
 	return
 }

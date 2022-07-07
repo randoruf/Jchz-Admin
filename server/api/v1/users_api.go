@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"jchz-admin/core/system"
 	"jchz-admin/model/request"
 	"jchz-admin/model/response"
@@ -248,14 +249,14 @@ func (u *UserApi) CheckComID(c *gin.Context) {
 		return
 	}
 	flag, err := companyService.CheckComID(uid)
-	if err != nil {
+	if err != nil && err != gorm.ErrRecordNotFound {
 		system.PrintError(err)
 		response.FailWithDetailed(http.StatusInternalServerError, "检查商家用户id失败，服务器出错，请稍后再试", c)
 		return
 	}
 	if flag == false {
-		c.JSON(http.StatusOK, response.CheckComIDResponse{
-			Data: &response.CheckComIdData{Result: "false"},
+		c.JSON(http.StatusOK, response.CheckExistsResponse{
+			Data: &response.CheckExistsData{Result: "false"},
 			Meta: &response.Meta{
 				Msg:    "该商家用户id不存在",
 				Status: http.StatusOK,
@@ -263,8 +264,8 @@ func (u *UserApi) CheckComID(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, response.CheckComIDResponse{
-		Data: &response.CheckComIdData{Result: "true"},
+	c.JSON(http.StatusOK, response.CheckExistsResponse{
+		Data: &response.CheckExistsData{Result: "true"},
 		Meta: &response.Meta{
 			Msg:    "该商家用户id存在",
 			Status: http.StatusOK,

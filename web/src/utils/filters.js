@@ -24,6 +24,29 @@ export const TrimString = (val, len) => {
   return val
 }
 
+export const TrimTag = (val, count) => {
+  let start = 0
+  let end = val.length
+  let firstFlag = true
+  for (let i = 0; i < val.length; i++) {
+    if (firstFlag && (val[i] !== '，' || val[i] !== ' ')) {
+      start = i
+      firstFlag = false
+    }
+    if (val[i] === '，') {
+      if (count === 0) {
+        end = i
+        return val.substring(start, end)
+      }
+      firstFlag = true
+      count--
+    }
+  }
+  if (count > 0) {
+    return ''
+  }
+  return val.substring(start, end)
+}
 export const isNull = (date) => {
   if (!date) return true
   if (JSON.stringify(date) === '{}') return true

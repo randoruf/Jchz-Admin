@@ -27,3 +27,12 @@ func SuccessWithNullData(status int, message string, c *gin.Context) {
 		Meta: &Meta{Msg: message, Status: status},
 	})
 }
+
+type CheckExistsData struct {
+	Result string `json:"result"`
+}
+
+type CheckExistsResponse struct {
+	Data *CheckExistsData `json:"data"`
+	Meta *Meta            `json:"meta"`
+}

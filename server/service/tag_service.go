@@ -65,3 +65,11 @@ func (t *TagService) DeleteTag(uid string) (bool, error) {
 	}
 	return true, nil
 }
+
+func (t *TagService) TagNameExists(tagName string) (bool, error) {
+	res := global.JA_DB.Where("tag_name = ?", tagName).First(&system.Tag{})
+	if res.Error != nil {
+		return false, res.Error
+	}
+	return true, nil
+}

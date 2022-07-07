@@ -24,12 +24,3 @@ type UpdateCompanyUserResponse struct {
 	UserData *system.CompanyUser `json:"data"`
 	Meta     *Meta               `json:"meta"`
 }
-
-type CheckComIdData struct {
-	Result string `json:"result"`
-}
-
-type CheckComIDResponse struct {
-	Data *CheckComIdData `json:"data"`
-	Meta *Meta           `json:"meta"`
-}

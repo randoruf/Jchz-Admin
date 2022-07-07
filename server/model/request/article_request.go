@@ -7,7 +7,12 @@ type ArticleQueryRequest struct {
 }
 
 type UpdateArticleRequest struct {
+	Id      uint64 `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Cover   string `json:"cover"`
+	Tag1    string `json:"tag1"`
+	Tag2    string `json:"tag2"`
+	Tag3    string `json:"tag3"`
+	Tags    string `json:"tags"` // 修改前 tag
 }

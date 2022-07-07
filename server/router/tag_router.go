@@ -15,5 +15,6 @@ func (t *TagsRouter) InitTagsRouter(Router *gin.RouterGroup) {
 		tagsRouter.POST("/tags", tagApi.AddTag)
 		tagsRouter.PUT("/tags/:id", tagApi.UpdateTag)
 		tagsRouter.DELETE("/tags/:id", tagApi.DeleteTag)
+		tagsRouter.GET("/tags/tagNameExists/:tagName", tagApi.TagNameExists)
 	}
 }

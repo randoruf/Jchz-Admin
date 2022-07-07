@@ -29,3 +29,10 @@ export const deleteTag = (id) => {
     method: 'delete'
   })
 }
+
+export const tagNameExists = (name) => {
+  return request({
+    url: `tags/tagNameExists/${name}`,
+    method: 'get'
+  })
+}
