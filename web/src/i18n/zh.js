@@ -65,7 +65,7 @@ export default {
     address: '店铺地址',
     phone: '店铺电话',
     create_time: '创建时间',
-    com_id: '店铺 id',
+    com_id: '商家 id',
     action: '操作'
   },
   message: {

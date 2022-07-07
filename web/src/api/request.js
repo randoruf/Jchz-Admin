@@ -39,7 +39,11 @@ service.interceptors.response.use(
   },
   (error) => {
     console.log(error.response)
-    error.response && ElMessage.error(error.response.data.meta.msg)
+    if (error.response.data.meta == null) {
+      error.response && ElMessage.error(error.response.data)
+    } else {
+      error.response && ElMessage.error(error.response.data.meta.msg)
+    }
     if (error.response.status === 401) {
       return store.dispatch('app/logout')
     }

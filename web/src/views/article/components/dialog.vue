@@ -68,7 +68,7 @@ const form = ref({
 })
 
 const validateTag = async (rule, value, callback) => {
-  const res = await tagNameExists(value)
+  const res = await tagNameExists({ tagName: value })
   if (res != null && res.result === 'true') {
     return
   }

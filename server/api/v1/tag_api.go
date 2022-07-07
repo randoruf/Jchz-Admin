@@ -144,9 +144,15 @@ func (t *TagApi) DeleteTag(c *gin.Context) {
 }
 
 func (t *TagApi) TagNameExists(c *gin.Context) {
-	name := c.Param("tagName")
+	name := c.Query("tagName")
 	if name == "" {
-		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		c.JSON(http.StatusOK, response.CheckExistsResponse{
+			Data: &response.CheckExistsData{Result: "true"},
+			Meta: &response.Meta{
+				Msg:    "标签为空",
+				Status: http.StatusOK,
+			},
+		})
 		return
 	}
 	flag, err := tagService.TagNameExists(name)
