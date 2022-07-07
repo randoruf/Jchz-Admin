@@ -21,6 +21,7 @@ func (u *UsersRouter) InitUsersRouter(Router *gin.RouterGroup) {
 		usersRouter.GET("/checkComID/:id", userApi.CheckComID)
 		usersRouter.POST("/admin", userApi.AddAdmin)
 		usersRouter.PUT("/admin/:id", userApi.UpdateAdmin)
+		usersRouter.PUT("/admin/editMyself/:id", userApi.UpdateSelf)
 		usersRouter.DELETE("/admin/:id", userApi.DeleteAdmin)
 	}
 }

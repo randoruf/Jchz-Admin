@@ -322,6 +322,33 @@ func (u *UserApi) UpdateAdmin(c *gin.Context) {
 	})
 }
 
+func (u *UserApi) UpdateSelf(c *gin.Context) {
+	var updateUserQuery request.UpdateSelfRequest
+	uid := c.Param("id")
+	if uid == "" {
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		return
+	}
+	err := c.ShouldBind(&updateUserQuery)
+	if err != nil {
+		response.FailWithDetailed(http.StatusBadRequest, "参数错误", c)
+		return
+	}
+	newUser, err := adminService.UpdateSelf(uid, updateUserQuery)
+	if err != nil {
+		system.PrintError(err)
+		response.FailWithDetailed(http.StatusInternalServerError, "更新管理员个人信息失败", c)
+		return
+	}
+	c.JSON(http.StatusOK, response.UpdateAdminResponse{
+		UserData: newUser,
+		Meta: &response.Meta{
+			Msg:    "更新管理员个人信息成功",
+			Status: http.StatusOK,
+		},
+	})
+}
+
 func (u *UserApi) DeleteAdmin(c *gin.Context) {
 	uid := c.Param("id")
 	if uid == "" {

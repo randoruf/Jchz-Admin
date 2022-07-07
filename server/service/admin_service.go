@@ -73,6 +73,18 @@ func (AdminService *AdminService) UpdateAdmin(uid string, form request.UpdateUse
 	return newUser, nil
 }
 
+func (AdminService *AdminService) UpdateSelf(uid string, form request.UpdateSelfRequest) (*system.Admin, error) {
+	newUser := &system.Admin{
+		Username: form.Username,
+		Avatar:   form.Avatar,
+	}
+	err := global.JA_DB.Model(&newUser).Where("admin_id = ?", uid).Updates(&newUser).Error
+	if err != nil {
+		return nil, err
+	}
+	return newUser, nil
+}
+
 func (AdminService *AdminService) DeleteAdmin(uid string) (bool, error) {
 	res := global.JA_DB.Delete(&system.Admin{}, uid)
 	if res.Error != nil {

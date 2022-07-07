@@ -22,3 +22,9 @@ type UpdateUserRequest struct {
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 }
+
+type UpdateSelfRequest struct {
+	ID       interface{} `json:"id"`
+	Avatar   string      `json:"avatar"`
+	Username string      `json:"username"`
+}
