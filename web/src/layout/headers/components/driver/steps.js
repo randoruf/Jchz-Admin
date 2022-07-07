@@ -22,5 +22,13 @@ export const steps = (i18n) => [
       description: i18n('driver.fullScreenDesc'),
       position: 'left'
     }
+  },
+  {
+    element: '#avatar',
+    popover: {
+      title: i18n('driver.avatar'),
+      description: i18n('driver.avatarDesc'),
+      position: 'left'
+    }
   }
 ]

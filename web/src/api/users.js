@@ -82,3 +82,11 @@ export const deleteAdmin = (id) => {
     method: 'delete'
   })
 }
+
+export const editMyself = (data) => {
+  return request({
+    url: `admin/editMyself/${data.id}`,
+    method: 'put',
+    data
+  })
+}

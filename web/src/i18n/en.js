@@ -12,7 +12,8 @@ export default {
     reports: 'data report',
     article: 'article list',
     companyUser: 'company user list',
-    tags: 'tag list'
+    tags: 'tag list',
+    shop: 'shop list'
   },
   login: {
     title: 'Jchz-Admin login',
@@ -36,8 +37,10 @@ export default {
     placeholder: 'Please enter a user name to search for',
     tagplaceholder: 'Please enter a tag name to search for',
     articleplaceholder: 'Please enter an article title to search for',
+    merchantplaceholder: 'Please enter a merchant name to search for',
     sex: 'sex',
-    addtag: 'add tag'
+    addtag: 'add tag',
+    addShop: 'add shop'
   },
   article: {
     id: 'article_id',
@@ -54,6 +57,16 @@ export default {
     articles: 'articles',
     action: 'action'
   },
+  shop: {
+    id: 'shop_id',
+    name: 'name',
+    address: 'address',
+    content: 'content',
+    phone: 'phone',
+    create_time: 'create_time',
+    com_id: 'company_id',
+    action: 'action'
+  },
   message: {
     updateSuccess: 'update successfully'
   },
@@ -68,7 +81,9 @@ export default {
     fullScreenDesc:
       'Click to make the browser display the web page in full screen',
     guideBtnDesc: 'Click to open the guide',
-    hamburgerBtnDesc: 'Click to open or close the menu'
+    hamburgerBtnDesc: 'Click to open or close the menu',
+    avatar: 'avatar',
+    avatarDesc: 'Hover over the avatar to open the drop-down menu'
   },
   radio: {
     user: 'user',

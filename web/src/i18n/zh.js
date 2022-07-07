@@ -12,7 +12,8 @@ export default {
     reports: '数据报表',
     article: '文章列表',
     companyUser: '商家列表',
-    tags: '标签列表'
+    tags: '标签列表',
+    shop: '店铺列表'
   },
   login: {
     title: '韭菜盒子后台管理系统登录',
@@ -36,8 +37,10 @@ export default {
     placeholder: '请输入搜索的用户姓名',
     tagplaceholder: '请输入搜索的标签名称',
     articleplaceholder: '请输入搜索的文章标题',
+    shopplaceholder: '请输入搜索的商店名称',
     sex: '性别',
-    addtag: '添加标签'
+    addtag: '添加标签',
+    addShop: '添加店铺'
   },
   article: {
     id: '文章 id',
@@ -55,6 +58,16 @@ export default {
     articles: '关联文章数',
     action: '操作'
   },
+  shop: {
+    id: '店铺 id',
+    name: '店铺名称',
+    content: '店铺介绍',
+    address: '店铺地址',
+    phone: '店铺电话',
+    create_time: '创建时间',
+    com_id: '店铺 id',
+    action: '操作'
+  },
   message: {
     updateSuccess: '更新成功'
   },
@@ -68,7 +81,9 @@ export default {
     fullScreen: '全屏按钮',
     fullScreenDesc: '点击使浏览器全屏显示页面',
     guideBtnDesc: '点击打开引导',
-    hamburgerBtnDesc: '点击打开或关闭菜单'
+    hamburgerBtnDesc: '点击打开或关闭菜单',
+    avatar: '头像',
+    avatarDesc: '鼠标悬停在头像处，可以打开下拉菜单'
   },
   radio: {
     user: '普通用户',

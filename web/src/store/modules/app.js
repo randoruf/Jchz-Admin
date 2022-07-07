@@ -31,6 +31,9 @@ export default {
           .then((res) => {
             console.log(res)
             commit('setToken', res.token)
+            localStorage.setItem('username', res.username)
+            localStorage.setItem('avatar', res.avatar)
+            localStorage.setItem('uid', res.id)
             setTokenTime()
             router.replace('/')
             resolve()

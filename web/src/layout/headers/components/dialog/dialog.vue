@@ -6,19 +6,11 @@
     @click="handleClose"
   >
     <el-form ref="formRef" :rules="rules" :model="form" label-width="120px">
-      <el-form-item label="文章标题" prop="title">
-        <el-input v-model="form.title" />
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="form.username" />
       </el-form-item>
-      <el-form-item label="文章内容" prop="content">
-        <el-input
-          v-model="form.content"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          type="textarea"
-          placeholder="请输入..."
-        />
-      </el-form-item>
-      <el-form-item label="封面图片" prop="cover">
-        <el-input v-model="form.cover" />
+      <el-form-item label="头像 Url" prop="avatar">
+        <el-input v-model="form.avatar" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -32,8 +24,8 @@
 
 <script setup>
 import { defineEmits, ref, defineProps, watch } from 'vue'
-import { editArticle } from '@/api/article'
 import { ElMessage } from 'element-plus'
+import { editMyself } from '@/api/users'
 const props = defineProps({
   dialogTitle: {
     type: String,
@@ -49,20 +41,17 @@ const props = defineProps({
 const formRef = ref(null)
 
 const form = ref({
+  uid: '',
   username: '',
-  password: '',
-  email: '',
-  phone: '',
-  sex: '',
-  hometown: '',
-  avatar: '',
-  birth: ''
+  avatar: ''
 })
 
 const rules = ref({
-  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-  content: [{ required: true, message: '请输入内容', trigger: 'blur' }],
-  cover: [{ required: true, message: '请输入封面图片URL', trigger: 'blur' }]
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  avatar: [
+    { required: true, message: '请输入头像 Url', trigger: 'blur' },
+    { type: 'url', message: '请输入正确的头像 Url', trigger: 'blur' }
+  ]
 })
 
 watch(
@@ -74,7 +63,12 @@ watch(
   { deep: true, immediate: true }
 )
 
-const emits = defineEmits(['update:modelValue', 'initArticlesList'])
+const emits = defineEmits(['update:modelValue', 'initUserInfo'])
+
+const UpdateInfo = () => {
+  localStorage.setItem('username', form.value.username)
+  localStorage.setItem('avatar', form.value.avatar)
+}
 const handleClose = () => {
   emits('update:modelValue', false)
 }
@@ -82,14 +76,15 @@ const handleClose = () => {
 const handleConfirm = () => {
   formRef.value.validate(async (valid, fields) => {
     if (valid) {
-      await editArticle(form.value)
+      await editMyself(form.value)
       ElMessage({
         showClose: true,
         message: '提交成功',
         type: 'success'
       })
+      UpdateInfo()
       handleClose()
-      emits('initArticlesList')
+      emits('initUserInfo')
     } else {
       console.log('error submit!', fields)
     }

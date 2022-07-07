@@ -42,7 +42,7 @@ import { menuList } from '@/api/menu'
 import { ref } from 'vue'
 import variables from '@/styles/variables.scss'
 
-const iconList = ref(['user', 'tickets', 'PriceTag'])
+const iconList = ref(['user', 'tickets', 'PriceTag', 'Shop'])
 const icon = ref('menu')
 
 const defaultActive = ref(sessionStorage.getItem('path') || '/users')

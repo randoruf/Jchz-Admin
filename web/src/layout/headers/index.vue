@@ -39,7 +39,7 @@ import Driver from './components/driver'
     justify-content: flex-end;
     ::v-deep .navbar-item {
       display: inline-block;
-      margin-left: 18px;
+      margin-right: 18px;
       font-size: 22px;
       color: #5a5e66;
       box-sizing: border-box;

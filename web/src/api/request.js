@@ -15,7 +15,7 @@ service.interceptors.request.use(
         return Promise.reject(new Error('token 失效了'))
       }
     }
-    config.headers.Authorization = localStorage.getItem('token')
+    config.headers.token = localStorage.getItem('token')
     return config
   },
   (error) => {
